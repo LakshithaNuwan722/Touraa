@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚗 Touraa - Car Rental Management System
+# 🚗 Touraa - Tour Management & Car Rental System
 
 **A complete and feature-rich car rental management system built with a modern tech stack.**
 
