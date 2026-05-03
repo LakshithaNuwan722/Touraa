@@ -109,14 +109,6 @@ For developers who prefer to run the services separately.
 
 ---
 
-## 🔑 Default Credentials
-
--   **Admin Email**: `admin@touraa.com`
--   **Admin Password**: `touraa_admin`
-
-You can access the admin dashboard by navigating to the login page.
-
----
 
 ## ⚙️ Configuration
 
@@ -144,50 +136,3 @@ You can access the admin dashboard by navigating to the login page.
 ├── run.bat          # Windows launcher script
 └── README.md
 ```
-
----
-
-## 🚀 Deploy to GitHub
-
-Follow these steps to push your project to a new GitHub repository.
-
-1.  **Initialize a local Git repository:**
-    Open your terminal, navigate to the project's root directory, and run:
-    ```sh
-    git init -b main
-    ```
-
-2.  **Add all files to the staging area:**
-    ```sh
-    git add .
-    ```
-
-3.  **Commit your files:**
-    ```sh
-    git commit -m "Initial commit: Add car rental management system"
-    ```
-
-4.  **Create a new repository on GitHub:**
-    -   Go to [GitHub](https://github.com) and log in.
-    -   Click the **+** icon in the top-right corner and select **New repository**.
-    -   Give your repository a name (e.g., `car-rental-system`).
-    -   Choose whether you want it to be public or private.
-    -   Click **Create repository**.
-
-5.  **Link your local repository to the remote one on GitHub:**
-    Copy the command provided by GitHub under the "...or push an existing repository from the command line" section. It will look like this:
-    ```sh
-    git remote add origin https://github.com/your-username/your-repository-name.git
-    ```
-    Replace `your-username` and `your-repository-name` with your actual GitHub username and repository name.
-
-6.  **Push your code to GitHub:**
-    ```sh
-    git push -u origin main
-    ```
-    This will upload your project to the GitHub repository. Now, your project is live on GitHub!
-
-
-## 📄 License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
