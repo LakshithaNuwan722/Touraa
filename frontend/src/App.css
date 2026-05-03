@@ -1,0 +1,164 @@
+/* Touraa Custom Styles */
+
+/* Hero section styles */
+.hero-gradient {
+  background: linear-gradient(135deg, rgba(26, 77, 46, 0.6) 0%, rgba(26, 77, 46, 0.4) 100%);
+}
+
+/* Card hover effects */
+.car-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.car-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* Button styles */
+.btn-primary {
+  background-color: hsl(27 81% 52%);
+  color: white;
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: hsl(27 81% 45%);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(230, 126, 34, 0.3);
+}
+
+.btn-secondary {
+  background-color: white;
+  color: hsl(148 52% 21%);
+  border: 1px solid hsl(148 52% 21% / 0.1);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: hsl(148 52% 21% / 0.05);
+  transform: translateY(-2px);
+}
+
+/* Input styles */
+.input-field {
+  height: 56px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-field:focus {
+  border-color: hsl(148 52% 21% / 0.5);
+  box-shadow: 0 0 0 3px hsl(148 52% 21% / 0.1);
+  outline: none;
+}
+
+/* Destination card */
+.destination-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.destination-card::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  z-index: 1;
+}
+
+.destination-card img {
+  transition: transform 0.5s ease;
+}
+
+.destination-card:hover img {
+  transform: scale(1.1);
+}
+
+/* Package card */
+.package-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.package-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* WhatsApp button */
+.whatsapp-btn {
+  background-color: #25D366;
+  color: white;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.whatsapp-btn:hover {
+  background-color: #128C7E;
+  transform: translateY(-2px);
+}
+
+/* Navigation */
+.nav-link {
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: hsl(27 81% 52%);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted) / 0.5) 50%, hsl(var(--muted)) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Feature badge */
+.feature-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: hsl(var(--primary) / 0.1);
+  color: hsl(var(--primary));
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Price tag */
+.price-tag {
+  background: hsl(var(--accent));
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+}
