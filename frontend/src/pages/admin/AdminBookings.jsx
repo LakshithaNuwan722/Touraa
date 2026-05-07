@@ -23,6 +23,12 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from 'components/ui/dropdown-menu';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+} from 'components/ui/dialog';
 import { toast } from 'sonner';
 import { useAuth } from 'context/AuthContext';
 
@@ -34,6 +40,8 @@ export default function AdminBookings() {
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState('all');
+    const [selectedBooking, setSelectedBooking] = useState(null);
+    const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
 
     const fetchBookings = async () => {
         try {
@@ -66,6 +74,11 @@ export default function AdminBookings() {
         } catch (error) {
             toast.error('Failed to update status');
         }
+    };
+
+    const handleViewDetails = (booking) => {
+        setSelectedBooking(booking);
+        setIsDetailsModalOpen(true);
     };
 
     const handleDelete = async (id) => {
@@ -205,7 +218,11 @@ export default function AdminBookings() {
                                                         <MoreVertical className="h-4 w-4" />
                                                     </Button>
                                                 </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end" className="w-40">
+                                                <DropdownMenuContent align="end" className="w-48">
+                                                    <DropdownMenuItem onClick={() => handleViewDetails(booking)} className="text-gray-700">
+                                                        <ExternalLink className="w-4 h-4 mr-2" /> View Details
+                                                    </DropdownMenuItem>
+                                                    <div className="h-px bg-black/5 my-1" />
                                                     <DropdownMenuItem onClick={() => handleUpdateStatus(booking.id, 'confirmed')} className="text-green-600">
                                                         <CheckCircle className="w-4 h-4 mr-2" /> Confirm
                                                     </DropdownMenuItem>
@@ -229,6 +246,78 @@ export default function AdminBookings() {
                     </div>
                 )}
             </div>
+
+            <Dialog open={isDetailsModalOpen} onOpenChange={setIsDetailsModalOpen}>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto w-[90vw]">
+                    <DialogHeader>
+                        <DialogTitle className="font-serif text-2xl text-[#1A4D2E]">
+                            Booking Details
+                        </DialogTitle>
+                    </DialogHeader>
+                    {selectedBooking && (
+                        <div className="space-y-6 mt-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-4">
+                                    <div>
+                                        <h4 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wider">Customer Info</h4>
+                                        <div className="bg-gray-50 p-4 rounded-xl border border-black/5 space-y-2">
+                                            <p className="font-medium text-[#1A4D2E] flex items-center gap-2"><User className="w-4 h-4" /> {selectedBooking.passenger_name}</p>
+                                            <p className="text-sm text-gray-600 truncate">{selectedBooking.passenger_email}</p>
+                                            <p className="text-sm text-gray-600">{selectedBooking.passenger_phone}</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wider">Vehicle & Cost</h4>
+                                        <div className="bg-gray-50 p-4 rounded-xl border border-black/5 space-y-2">
+                                            <p className="font-medium flex items-center gap-2"><Car className="w-4 h-4 text-[#E67E22]" /> {selectedBooking.car_name}</p>
+                                            <p className="text-sm text-gray-600">Distance: {selectedBooking.distance_km} km</p>
+                                            <p className="text-[#E67E22] font-bold mt-1">Rs {selectedBooking.estimated_cost?.toLocaleString()}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="space-y-4">
+                                    <div>
+                                        <h4 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wider">Trip Details</h4>
+                                        <div className="bg-gray-50 p-4 rounded-xl border border-black/5 space-y-3">
+                                            <div>
+                                                <p className="text-xs text-gray-500 mb-1">Pickup</p>
+                                                <p className="text-sm font-medium flex items-start gap-2"><MapPin className="w-4 h-4 text-green-600 shrink-0 mt-0.5" /> {selectedBooking.pickup_location}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-xs text-gray-500 mb-1">Drop-off</p>
+                                                <p className="text-sm font-medium flex items-start gap-2"><MapPin className="w-4 h-4 text-red-600 shrink-0 mt-0.5" /> {selectedBooking.drop_location}</p>
+                                            </div>
+                                            <div className="pt-2 border-t border-black/5">
+                                                <p className="text-sm flex items-center gap-2 text-muted-foreground"><Calendar className="w-4 h-4" /> {selectedBooking.pickup_date} @ {selectedBooking.pickup_time}</p>
+                                                <p className="text-sm flex items-center gap-2 text-muted-foreground mt-1"><Calendar className="w-4 h-4" /> Return: {selectedBooking.drop_date}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            {selectedBooking.special_requests && (
+                                <div>
+                                    <h4 className="text-sm font-semibold text-muted-foreground mb-2 uppercase tracking-wider">Special Requests</h4>
+                                    <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-200 text-sm text-yellow-800">
+                                        {selectedBooking.special_requests}
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-black/5">
+                                <div className="text-xs text-gray-500 space-y-1">
+                                    <p>Booking ID: <span className="font-mono">{selectedBooking.id}</span></p>
+                                    <p>Created: {new Date(selectedBooking.created_at).toLocaleString()}</p>
+                                </div>
+                                <div>
+                                    {getStatusBadge(selectedBooking.status)}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

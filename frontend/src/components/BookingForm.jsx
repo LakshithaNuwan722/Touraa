@@ -318,6 +318,8 @@ export const BookingForm = ({ car, onSuccess }) => {
     try {
       const bookingData = {
         car_id: car.id,
+        booking_type: bookingType,
+        num_days: parseInt(formData.num_days) || 1,
         pickup_location: formData.pickup_location,
         drop_location: bookingType === 'transfer' ? formData.drop_location : formData.pickup_location,
         pickup_date: format(formData.pickup_date, 'yyyy-MM-dd'),
@@ -358,6 +360,15 @@ export const BookingForm = ({ car, onSuccess }) => {
   const getMinDate = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
+    // Buses, Vans, and VIP categories require 5 days advance booking
+    const restrictedTypes = ['bus', 'van', 'vip'];
+    if (car && car.type && restrictedTypes.includes(car.type.toLowerCase())) {
+      const minDate = new Date(today);
+      minDate.setDate(today.getDate() + 5);
+      return minDate;
+    }
+
     return today;
   };
 

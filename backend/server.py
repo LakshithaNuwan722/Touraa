@@ -144,6 +144,8 @@ class BookingCreate(BaseModel):
     passenger_name: str
     passenger_email: EmailStr
     passenger_phone: str
+    booking_type: Optional[str] = "transfer"
+    num_days: Optional[int] = 1
     distance_km: Optional[float] = 0
     special_requests: Optional[str] = None
 
@@ -605,7 +607,10 @@ async def create_booking(booking: BookingCreate, authorization: str = Header(Non
         else:
             road_distance = 0
 
-    cost = round(road_distance * 120, 2)
+    if booking.booking_type == "tour":
+        cost = (car.get("daily_rate") or 22000) * (booking.num_days or 1)
+    else:
+        cost = round(road_distance * (car.get("price_per_km") or 120), 2)
     
     # Get user if authenticated
     user_id = None
