@@ -7,7 +7,8 @@ import {
     Trash2,
     Edit2,
     X,
-    UploadCloud
+    UploadCloud,
+    Link
 } from 'lucide-react';
 import axios from 'axios';
 import { Button } from 'components/ui/button';
@@ -32,6 +33,7 @@ export default function AdminGallery() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingGallery, setEditingGallery] = useState(null);
     const [isUploading, setIsUploading] = useState(false);
+    const [newImageUrl, setNewImageUrl] = useState('');
     const fileInputRef = useRef(null);
 
     const [formData, setFormData] = useState({
@@ -115,6 +117,16 @@ export default function AdminGallery() {
         }
     };
 
+    const handleAddImageUrl = () => {
+        if (!newImageUrl.trim()) return;
+        setFormData(prev => ({
+            ...prev,
+            images: [...prev.images, newImageUrl.trim()]
+        }));
+        setNewImageUrl('');
+        toast.success('Image link added successfully');
+    };
+
     const removeImage = (indexToRemove) => {
         setFormData(prev => ({
             ...prev,
@@ -126,7 +138,7 @@ export default function AdminGallery() {
         e.preventDefault();
 
         if (formData.images.length === 0) {
-            toast.error('Please upload at least one image');
+            toast.error('Please add at least one image link');
             return;
         }
 
@@ -286,27 +298,49 @@ export default function AdminGallery() {
                         </div>
 
                         <div className="space-y-4">
-                            <div className="flex items-center justify-between">
-                                <label className="text-sm font-medium text-gray-700">Images</label>
-                                <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => fileInputRef.current?.click()}
-                                    disabled={isUploading}
-                                    className="rounded-xl gap-2 border-black/10"
-                                >
-                                    <UploadCloud className="w-4 h-4" />
-                                    {isUploading ? 'Uploading...' : 'Upload Images'}
-                                </Button>
-                                <input
-                                    type="file"
-                                    multiple
-                                    accept="image/*"
-                                    className="hidden"
-                                    ref={fileInputRef}
-                                    onChange={handleFileUpload}
-                                />
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <label className="text-sm font-medium text-gray-700">Images</label>
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => fileInputRef.current?.click()}
+                                        disabled={isUploading}
+                                        className="rounded-xl gap-2 border-black/10"
+                                    >
+                                        <UploadCloud className="w-4 h-4" />
+                                        {isUploading ? 'Uploading...' : 'Upload Images'}
+                                    </Button>
+                                    <input
+                                        type="file"
+                                        multiple
+                                        accept="image/*"
+                                        className="hidden"
+                                        ref={fileInputRef}
+                                        onChange={handleFileUpload}
+                                    />
+                                </div>
+                                <div className="flex gap-2">
+                                    <div className="relative flex-1">
+                                        <Link className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                                        <Input
+                                            placeholder="Or paste image URL here..."
+                                            value={newImageUrl}
+                                            onChange={(e) => setNewImageUrl(e.target.value)}
+                                            className="pl-9 rounded-xl"
+                                        />
+                                    </div>
+                                    <Button 
+                                        type="button" 
+                                        variant="secondary"
+                                        onClick={handleAddImageUrl}
+                                        disabled={!newImageUrl.trim()}
+                                        className="rounded-xl whitespace-nowrap bg-gray-100 hover:bg-gray-200 text-gray-900"
+                                    >
+                                        Add Link
+                                    </Button>
+                                </div>
                             </div>
 
                             {formData.images.length > 0 ? (
@@ -333,7 +367,7 @@ export default function AdminGallery() {
                             ) : (
                                 <div className="py-12 text-center bg-gray-50 rounded-xl border border-dashed border-gray-300">
                                     <ImageIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                                    <p className="text-sm text-gray-500">No images uploaded yet.</p>
+                                    <p className="text-sm text-gray-500">No images added yet.</p>
                                 </div>
                             )}
                         </div>
