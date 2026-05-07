@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { Menu, X, User, LogOut, LayoutDashboard, MessageCircle } from 'lucide-react';
 import { Button } from 'components/ui/button';
 import {
   DropdownMenu,
@@ -26,6 +26,8 @@ export const Navbar = () => {
 
   const isActive = (path) => location.pathname === path;
 
+  const isAdminPath = location.pathname.startsWith('/admin');
+
   return (
     <nav className="sticky top-0 z-50 glass border-b border-white/20" data-testid="navbar">
       <div className="max-w-7xl mx-auto px-4 md:px-8">
@@ -42,7 +44,7 @@ export const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
+            {!isAdminPath && navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
@@ -59,6 +61,17 @@ export const Navbar = () => {
 
           {/* Auth Section */}
           <div className="hidden md:flex items-center gap-4">
+            {!isAdminPath && (
+              <a
+                href="https://wa.me/94755521921"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 bg-[#25D366] hover:bg-[#25D366]/90 text-white px-4 py-2 rounded-full font-medium transition-colors shadow-sm"
+              >
+                <MessageCircle className="w-4 h-4 shrink-0" />
+                <span>WhatsApp</span>
+              </a>
+            )}
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -72,12 +85,12 @@ export const Navbar = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
-                  {isAdmin && (
+                  {isAdmin && !isAdminPath && (
                     <DropdownMenuItem asChild>
-                      <a href="http://localhost:3001/admin" className="flex items-center text-[#E67E22] font-semibold">
+                      <Link to="/admin" className="flex items-center text-[#E67E22] font-semibold">
                         <LayoutDashboard className="w-4 h-4 mr-2" />
                         Admin Panel
-                      </a>
+                      </Link>
                     </DropdownMenuItem>
                   )}
                   <DropdownMenuItem asChild>
@@ -122,7 +135,7 @@ export const Navbar = () => {
         {isOpen && (
           <div className="md:hidden py-4 border-t border-[#1A4D2E]/10" data-testid="mobile-menu">
             <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
+              {!isAdminPath && navLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
@@ -137,14 +150,14 @@ export const Navbar = () => {
               ))}
               {user ? (
                 <>
-                  {isAdmin && (
-                    <a
-                      href="http://localhost:3001/admin"
+                  {isAdmin && !isAdminPath && (
+                    <Link
+                      to="/admin"
                       className="font-bold py-2 text-[#E67E22]"
                       onClick={() => setIsOpen(false)}
                     >
                       Admin Panel
-                    </a>
+                    </Link>
                   )}
                   <Link
                     to="/dashboard"
@@ -169,6 +182,19 @@ export const Navbar = () => {
                     Login / Sign Up
                   </Button>
                 </Link>
+              )}
+              
+              {!isAdminPath && (
+                <a
+                  href="https://wa.me/94755521921"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#25D366]/90 text-white py-3 rounded-xl font-medium mt-2 shadow-sm"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  <span>Chat on WhatsApp</span>
+                </a>
               )}
             </div>
           </div>
