@@ -1,4 +1,4 @@
-# 🚗 Touraa - Tour Management & Car Rental System
+# 🚗 Touraa - Tour & Transport Operating System
 
 Touraa is a professional, full-stack tour management and car rental system. It provides an end-to-end solution for car rental businesses, featuring a robust FastAPI backend and a modern, responsive React frontend. The system is designed to handle everything from vehicle management and booking processing to an administrative dashboard for real-time monitoring and control.
 
